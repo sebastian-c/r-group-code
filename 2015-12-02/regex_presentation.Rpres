@@ -1,0 +1,190 @@
+Regex and interesting characters
+========================================================
+author: Sebastian Campbell
+date: 2015-12-02
+
+Some limitations
+========================================================
+
+- Only focusing on base (consider `stringr`)
+- Giving overview with focus on *how to use* these tools with data
+
+Basic string stuff in R
+========================================================
+
+Sometimes you don't need powerful tools to get the job done
+We'll start by using a default dataset in R, `chickwts`.
+```{r}
+str(chickwts)
+summary(chickwts)
+```
+
+Chickwts
+========================================================
+
+```{r}
+head(chickwts, 30)
+```
+
+Who could want more?
+========================================================
+
+```{r}
+chickwts[chickwts$feed == "horsebean",]
+```
+
+And if I want all beans?
+========================================================
+
+Too easy:
+
+```{r}
+chickwts[chickwts$feed %in% c("horsebean", "soybean"),]
+```
+
+But what if I don't know what I want?
+========================================================
+
+Enter Regular Expressions (Regex). String manipulation.
+
+Useful for:
+- Find (`grep`, `grepl`)
+- Replace (`sub`, `gsub`)
+- Extract (`regexpr`, `gregexpr`)
+
+Back to beans
+========================================================
+
+```{r}
+beans <- c("soybean", "castor bean", "lentil", "wheat", "beanie baby", "horsebean", "pinto bean", "potato")
+grep("bean", beans)
+grep("bean", beans, value=TRUE)
+```
+
+Needs to end with bean
+========================================================
+
+Magic of zero-length assertions
+- `^` starts with
+- `$` ends with
+
+```{r}
+grep("bean$", beans, value=TRUE)
+```
+
+Back to chickweights
+========================================================
+
+Note that we can also use `grepl`. It's often better for subsetting:
+```{r}
+grepl("bean$", beans)
+chickwts[grepl("bean$", chickwts$feed),]
+```
+
+Nice toy, When might I actually use this?
+========================================================
+
+Already in use: 
+[SWS-Methodology/faoswsProduction](https://github.com/SWS-Methodology/faoswsProduction/blob/1d247fe328d18aed02c45ed31c9358e99a1b3fe0/R/getLastValue.R)
+
+```
+20: valCols = grep("Value_", colnames(d), value = TRUE)
+21: obsFlagCols = grep("flagObservation", colnames(d), value = TRUE)
+22: metFlagCols = grep("flagMethod", colnames(d), value = TRUE)
+```
+
+How it's used:
+========================================================
+
+When using the SWS, you can end up with multiple `Value` columns. You can separate the value columns like so using basic regex:
+```{r, echo=FALSE}
+sws <- structure(list(geographicAreaM49 = c("230", "230", "230", "230", 
+"230", "230"), timePointYears = c("2013", "2013", "2013", "2013", 
+"2013", "2014"), measuredElement = c("5320", "53200", "53201", 
+"5510", "55100", "5320"), Value_measuredItemCPC_02111 = c(NA_real_, 
+NA_real_, NA_real_, NA_real_, NA_real_, NA_real_), flagObservationStatus_measuredItemCPC_02111 = c(NA_character_, 
+NA_character_, NA_character_, NA_character_, NA_character_, NA_character_
+), flagMethod_measuredItemCPC_02111 = c(NA_character_, NA_character_, 
+NA_character_, NA_character_, NA_character_, NA_character_), 
+    Value_measuredItemCPC_21111.01 = c(0, 0, 0, 0, 0, 0), flagObservationStatus_measuredItemCPC_21111.01 = c("M", 
+    "M", "M", "M", "M", "M"), flagMethod_measuredItemCPC_21111.01 = c("u", 
+    "u", "u", "u", "u", "u")), .Names = c("geographicAreaM49", 
+"timePointYears", "measuredElement", "Value_measuredItemCPC_02111", 
+"flagObservationStatus_measuredItemCPC_02111", "flagMethod_measuredItemCPC_02111", 
+"Value_measuredItemCPC_21111.01", "flagObservationStatus_measuredItemCPC_21111.01", 
+"flagMethod_measuredItemCPC_21111.01"), class = "data.frame", row.names = c(NA, 
+-6L))
+```
+```{r}
+names(sws)
+```
+
+Keeping only the Value columns
+========================================================
+
+```{r}
+grep("^Value_", names(sws), value=TRUE)
+```
+
+Using regex to replace
+========================================================
+
+One of the most common uses of regex in R is to remove useless additions to a string. For example:
+
+```{r, echo=FALSE}
+makenoise <- function(n, selection = letters, length = 5){
+  apply(replicate(n, sample(c(selection, ""), length, replace=TRUE, prob=c(rep(0.7/length(selection), length(selection)), .3))), 2, paste0, collapse="")
+}
+n <- 10
+noisystring <- paste0(makenoise(n), sample(1990:2015, n, rep=T), makenoise(n))
+```
+
+```{r}
+noisystring
+```
+
+Noise-cancelling
+========================================================
+
+Removing everything is easy, replace it with empty string
+
+```{r}
+gsub("[A-Za-z]", "", noisystring)
+```
+
+Real example
+========================================================
+
+Taken from [SWS-Methodology/faoswsStandardization](https://github.com/SWS-Methodology/faoswsStandardization/blob/244a39131923f66595c4c0a89e0cb530c33fbb2a/documentation/Old_code_and_documentation/archive/function/read.sua.R)
+
+```
+10: mtmp = melt(tmp, id.var = keys)
+11: mtmp$Year = as.integer(gsub("[^0-9]", "", mtmp$variable))
+12: mtmp$Type = ifelse(grepl("Num", mtmp$variable), "Value", "Symb")
+```
+
+Something similar in action:
+========================================================
+
+```{r, echo=FALSE}
+n <- 10
+selection <- c(letters, "&", "_")
+noisystring2 <- paste0(makenoise(n, selection), sample(1990:2015, n, rep=T), makenoise(n, selection))
+```
+
+```{r}
+noisystring2
+```
+
+Removing everything that isn't a number
+========================================================
+```{r}
+gsub("[^0-9]", "", noisystring2)
+```
+
+Other topics
+========================================================
+
+- Playing around
+- Replacing segments
+- Lookahead references
