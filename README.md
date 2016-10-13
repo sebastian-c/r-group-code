@@ -3,6 +3,7 @@ This repository has all the code that presenters have used for R Group meetings.
 Date       | Presenter          | Topic
 -----------|--------------------|------------------------------
 2015-02-18 | Joshua Browning    | CO_2 modelling
+2015-03-04 | Joshua Browning    | Data types
 2015-11-18 | Joshua Browning    | R and RStudio tips and tricks
 2015-12-02 | Sebastian Campbell | Regular expressions
 2016-03-17 | Sebastian Campbell | Debugging in R
