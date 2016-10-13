@@ -1,0 +1,132 @@
+## Read in a csv file
+setwd("~/Documents/Projects/Ad Hoc/Rocio_Condor/") # Set your directory
+emissionsData = read.csv(file = "italyData.csv")
+
+## Look at the data
+dim(emissionsData)
+head(emissionsData)
+tail(emissionsData)
+str(emissionsData)
+
+## Basic Plotting: One country over time
+plot(Value ~ Year, data = emissionsData)
+plot(Value ~ Year, data = emissionsData, pch = 16)
+plot(Value ~ Year, data = emissionsData, ylab = "Emissions (Gg)")
+plot(Value ~ Year, data = emissionsData, col = 2, pch = 16)
+# lines() and points() add to the current plot
+lines(Value ~ Year, data = emissionsData)
+plot(Value ~ Year, data = emissionsData, type = "l") # "l" for "line"
+points(Value ~ Year, data = emissionsData, pch = 6)
+
+## More elegant plotting: use ggplot2
+library(ggplot2)
+ggplot(emissionsData, aes(x = Year, y = Value)) +
+    geom_point()
+ggplot(emissionsData, aes(x = Year, y = Value)) +
+    geom_point() + geom_line()
+ggplot(emissionsData, aes(x = Year, y = Value, color = Value > 35000)) +
+    geom_point()
+ggplot(emissionsData, aes(x = Year, y = Value, color = Value > 35000)) +
+    geom_point() + geom_hline(yintercept = 35000, color = "red", linetype = 2)
+
+## Now, let's look at the full dataset from FAOSTAT
+emissionsData = read.csv(file = "faostat_data.csv")
+dim(emissionsData)
+head(emissionsData)
+tail(emissionsData)
+str(emissionsData)
+
+countrySubset = c("USSR", "Canada", "China, mainland",
+                  "United States of America", "Brazil", "Australia", "India",
+                  "Argentina", "Kazakhstan")
+# Now, let's only consider the 9 countries we sampled:
+library(dplyr)
+emissionsDataSubset = emissionsData %>%
+    filter(AreaName %in% countrySubset, Year <= 2015)
+dim(emissionsDataSubset)
+
+ggplot(emissionsDataSubset, aes(x = Year, y = Value)) +
+    geom_point()
+ggplot(emissionsDataSubset, aes(x = Year, y = Value, color = AreaName)) +
+    geom_point()
+ggplot(emissionsDataSubset, aes(x = Year, y = Value, color = AreaName)) +
+    geom_point() + facet_wrap( ~ AreaName)
+ggplot(emissionsDataSubset, aes(x = Year, y = Value, color = AreaName)) +
+    geom_point() + facet_wrap( ~ AreaName, scales = "free")
+ggplot(emissionsDataSubset, aes(x = Year, y = Value, color = AreaName)) +
+    geom_point() + facet_wrap( ~ AreaName, scales = "free") +
+    labs(y = "Emissions (Gg)", color = "Country", title = "Emissions")
+ggplot(emissionsDataSubset, aes(x = Year, y = Value, color = AreaName)) +
+    geom_point() + facet_wrap( ~ AreaName, scales = "free") +
+    labs(y = "Emissions (Gg)", color = "Country", title = "Emissions") +
+    geom_smooth()
+ggplot(emissionsDataSubset, aes(x = Year, y = Value, color = AreaName)) +
+    geom_point() + facet_wrap( ~ AreaName, scales = "free") +
+    labs(y = "Emissions (Gg)", color = "Country", title = "Emissions") +
+    geom_smooth(method = "lm")
+
+## FAOSTAT let's us access this data directly:
+library(FAOSTAT)
+# FAOsearch() # 8 1 1 1 1
+# queriedData = getFAOtoSYB(query = .LastSearch)
+emissionsDataFAOSTAT = getFAO(
+    name = "Agriculture Total_Agriculture total + (Total)_Emissions (CO2eq)(NA)",
+    domainCode = "GT", itemCode = "1711", elementCode = "7231")
+colnames(emissionsDataFAOSTAT)
+head(emissionsDataFAOSTAT)
+colnames(emissionsDataFAOSTAT)[3] = "Emissions"
+head(emissionsDataFAOSTAT)
+for(i in 1:10){
+    dataSubset = emissionsDataFAOSTAT %>%
+        filter(FAOST_CODE == i)
+    fileName = paste0("plot_", i, ".png")
+    png(fileName)
+    print(ggplot(dataSubset, aes(x = Year, y = Emissions)) +
+        geom_point() + geom_smooth() + labs(y = "Emissions (Gg)"))
+    dev.off() # Turn off plotting
+}
+
+## Aggregation Example using dplyr: plot averages by year
+emissionsDataFAOSTAT %>%
+    group_by(Year) %>%
+    summarize(totalEmissions = sum(Emissions, na.rm = TRUE))
+
+emissionsDataFAOSTAT %>%
+    group_by(Year) %>%
+    summarize(totalEmissions = sum(Emissions, na.rm = TRUE)) %>%
+    qplot(Year, totalEmissions, data = .) + labs(y = "Total Emissions (Gg)")
+
+emissionsDataFAOSTAT %>%
+    filter(Year > 1991 & Year < 2010) %>%
+    group_by(Year) %>%
+    summarize(totalEmissions = sum(Emissions, na.rm = TRUE)) %>%
+    qplot(Year, totalEmissions, data = .) + labs(y = "Total Emissions (Gg)")
+
+emissionsDataFAOSTAT %>%
+    filter(Year > 1990 & Year < 2010) %>%
+    group_by(FAOST_CODE) %>%
+    summarize(meanEmissions = mean(Emissions, na.rm = TRUE)) %>%
+    arrange(meanEmissions)
+
+emissionsDataFAOSTAT %>%
+    filter(Year > 1990 & Year < 2010) %>%
+    group_by(FAOST_CODE) %>%
+    summarize(meanEmissions = mean(Emissions, na.rm = TRUE)) %>%
+    arrange(desc(meanEmissions))
+
+emissionsDataFAOSTAT %>%
+    filter(Year > 1990 & Year < 2010) %>%
+    group_by(FAOST_CODE) %>%
+    summarize(meanEmissions = mean(Emissions, na.rm = TRUE)) %>%
+    arrange(desc(meanEmissions)) %>%
+    qplot(data = ., x = factor(FAOST_CODE), y = meanEmissions) +
+        labs(y = "Emissions (Gg)")
+
+emissionsDataFAOSTAT %>%
+    filter(Year > 1990 & Year < 2010) %>%
+    group_by(FAOST_CODE) %>%
+    summarize(meanEmissions = mean(Emissions, na.rm = TRUE)) %>%
+    arrange(desc(meanEmissions)) %>%
+    filter(meanEmissions >= 200000) %>%
+    qplot(data = ., x = factor(FAOST_CODE), y = meanEmissions) +
+        labs(y = "Emissions (Gg)")
