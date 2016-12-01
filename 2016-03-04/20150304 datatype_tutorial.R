@@ -193,6 +193,22 @@ names(complicatedList)
 complicatedList$
 complicatedList$C$element1
 
+## data.frames are actually lists
+data = read.csv("faostat_data.csv")
+is(data)
+head(data)
+is(data$Domain.Code)
+is(data$ItemCode)
+is(data$Value)
+is(data) # data.frames are basically fancy lists
+## sapply lets us use a function ("is", in this case) on all elements of the
+## data.frame.
+?sapply
+sapply(data, is)
+## Or, if you're more comfortable with loops, you can always use them:
+for(i in 1:ncol(data))
+    print(is(data[, i]))
+
 ## S4 objects
 library(Matrix)
 x = rbinom(10000, size = 1, p = .01)
