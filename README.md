@@ -9,3 +9,4 @@ Date       | Presenter          | Topic
 2016-03-17 | Sebastian Campbell | Debugging in R
 2016-06-01 | Michael Rahija     | Web scraping using `rvest`
 2016-11-30 | Sebastian Campbell | Introduction to data.table
+2017-03-15 | Sebastian Campbell | Making documents in knitr

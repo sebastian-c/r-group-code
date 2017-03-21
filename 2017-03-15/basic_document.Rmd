@@ -1,0 +1,87 @@
+---
+title: "Basic Document"
+author: "Sebastian Campbell"
+date: "March 15, 2017"
+output:
+  #pdf_document: default
+  #word_document: default
+  #word_document: 
+  #  reference_docx: document_template.docx
+   bookdown::gitbook:
+     highlight: tango
+  #html_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(echo = TRUE)
+is_html <- !opts_knit$get("rmarkdown.pandoc.to") %in% c("latex", "docx")
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can also use `rmarkdown::render` for markdown files. You can embed an R code chunk like this:
+
+```{r cars}
+kable(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Not just R
+
+We can also use other languages using other engines, like `engine = bash`:
+
+```{r, echo = FALSE}
+if(Sys.which("bash") == ""){
+  message("Bash is not available on this machine")
+}
+```
+
+```{r bash-engine, engine='bash', eval = !Sys.which("bash") == ""}
+echo `ls`
+```
+
+Only catch is that R is the only language which has objects persist between code chunks
+
+## Reading in chunks
+
+You may not want to have to start your document from scratch. You can read chunks from other documents by marking them up with comments:
+
+```{r read-chunks}
+read_chunk("child_document.R")
+x <- 5
+```
+
+```{r child-chunk, comment = "child>"}
+```
+
+## Freedom from paper (only for HTML)
+
+```{r, include = is_html, eval = is_html}
+library(DT)
+datatable(cars, options = list(pageLength = 5))
+```
+
+
+```{r, include = is_html, eval = is_html}
+library(leaflet)
+
+#Annual temperature in Oregon
+orstationc <- read.csv("http://geog.uoregon.edu/bartlein/old_courses/geog414s05/data/orstationc.csv")
+
+pal <- colorQuantile("YlOrRd", NULL, n = 8)
+leaflet(orstationc) %>% 
+  addTiles(urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png") %>%
+  addCircleMarkers(color = ~pal(tann))
+```
