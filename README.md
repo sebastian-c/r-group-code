@@ -2,13 +2,13 @@ This repository has all the code that presenters have used for R Group meetings.
 
 Date       | Presenter          | Topic
 -----------|--------------------|------------------------------
-2015-02-18 | Joshua Browning    | CO_2 modelling
-2015-03-04 | Joshua Browning    | Data types
-2015-11-18 | Joshua Browning    | R and RStudio tips and tricks
-2015-12-02 | Sebastian Campbell | Regular expressions
-2016-03-17 | Sebastian Campbell | Debugging in R
-2016-06-01 | Michael Rahija     | Web scraping using `rvest`
-2016-11-30 | Sebastian Campbell | Introduction to data.table
-2017-03-15 | Sebastian Campbell | Making documents in knitr
-2017-04-12 | Sebastian Campbell | Introduction to `ggplot2`
-2017-04-26 | Philip Chan        | Introduction to `dplyr`
+2015-02-18 | Joshua Browning    | [CO_2 modelling](2015-02-18)
+2015-03-04 | Joshua Browning    | [Data types](2015-03-04)
+2015-11-18 | Joshua Browning    | [R and RStudio tips and tricks](2015-11-18)
+2015-12-02 | Sebastian Campbell | [Regular expressions](2015-12-02)
+2016-03-17 | Sebastian Campbell | [Debugging in R](2016-03-17)
+2016-06-01 | Michael Rahija     | [Web scraping using `rvest`](2016-06-01)
+2016-11-30 | Sebastian Campbell | [Introduction to data.table](2016-11-30)
+2017-03-15 | Sebastian Campbell | [Making documents in knitr](2017-03-15)
+2017-04-12 | Sebastian Campbell | [Introduction to `ggplot2`](2017-04-12)
+2017-04-26 | Philip Chan        | [Introduction to `dplyr`](2017-04-26)
