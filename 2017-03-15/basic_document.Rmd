@@ -20,7 +20,7 @@ is_html <- !opts_knit$get("rmarkdown.pandoc.to") %in% c("latex", "docx")
 
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>. Note, you'll need to have MiKTeX or some other LaTeX distribution installed if you want to generate PDFs. You'll also need Pandoc, but this comes included if you're using Rstudio.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can also use `rmarkdown::render` for markdown files. You can embed an R code chunk like this:
 
