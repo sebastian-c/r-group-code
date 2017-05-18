@@ -12,3 +12,4 @@ Date       | Presenter          | Topic
 2017-03-15 | Sebastian Campbell | [Making documents in knitr](https://github.com/sebastian-c/r-group-code/tree/master/2017-03-15)
 2017-04-12 | Sebastian Campbell | [Introduction to `ggplot2`](https://github.com/sebastian-c/r-group-code/tree/master/2017-04-12)
 2017-04-26 | Philip Chan        | [Introduction to `dplyr`](https://github.com/sebastian-c/r-group-code/tree/master/2017-04-26)
+2017-05-11 | Sebastian Campbell | [Statistical Working System](https://github.com/sebastian-c/r-group-code/tree/master/2017-05-11)
