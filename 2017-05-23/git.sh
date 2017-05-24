@@ -42,6 +42,10 @@ git commit -m "Named the dwarf planet Pluto"
 
 git merge rethinking-planets
 
+# In case of panic, use `git merge --abort` to go back to previous state
+
 # Clone a project
 cd ..
 git clone git@github.com:sebastian-c/r-group-code.git
+
+# Note that we now have bitbucket on https://sdlc.fao.org/bitbucket
