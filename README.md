@@ -14,3 +14,4 @@ Date       | Presenter          | Topic
 2017-04-26 | Philip Chan        | [Introduction to `dplyr`](https://github.com/sebastian-c/r-group-code/tree/master/2017-04-26)
 2017-05-11 | Sebastian Campbell | [Statistical Working System](https://github.com/sebastian-c/r-group-code/tree/master/2017-05-11)
 2017-05-23 | Sebastian Campbell | [Using version control with Rstudio](https://github.com/sebastian-c/r-group-code/tree/master/2017-05-23)
+2017-06-06 | Philip Chan        | [Functions in R](https://github.com/sebastian-c/r-group-code/tree/master/2017-06-06)
