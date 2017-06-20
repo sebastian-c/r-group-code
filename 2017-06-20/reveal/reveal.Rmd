@@ -1,0 +1,49 @@
+---
+title: "reveal.js"
+author: Sebastian Campbell
+date: June 20, 2017
+output: 
+  revealjs::revealjs_presentation:
+    self_contained: false
+    reveal_plugins: "notes"
+---
+
+# Basics
+
+## Layout
+
+- Slides are arranged along a spine
+- Good layout for long presentations
+- Or optional extras
+
+# Commands
+
+## Overview
+
+- You can press press 'o' to see the overview
+
+## Presenter notes
+
+- You can also see presenter notes by pressing 's' with the notes plugin
+
+<div class="notes">
+- Don't panic
+- Stay calm
+- You can do this
+</div>
+
+
+# And what about R?
+
+## We still have code
+
+```{r}
+apply(Titanic, c(3, 4), sum)
+```
+
+## And graphs
+
+```{r}
+mosaicplot(Titanic, main = "Survival on the Titanic")
+```
+
